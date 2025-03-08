@@ -7,10 +7,16 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+const Content = () => {
+  return <PostgresValue value="Hello World!" type="varchar" />;
+};
+
 const App = () => {
   return (
     <ThemeProvider theme={grayScaleLightTheme}>
-      <PostgresValue value="Hello World!" type="varchar" />
+      <main>
+        <Content />
+      </main>
     </ThemeProvider>
   );
 };
