@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import { getResolvedDataType, dataTypes as dt } from '../../utils/dataTypes';
 
 export type PostgresValueProps = {
-  value: any;
-  type: string;
+  dataType: string;
+  children: React.ReactNode;
+  context?: string;
 };
 
 const StyledNumber = styled.span`
@@ -28,25 +29,25 @@ const StyledText = styled.span`
   font-family: Regular;
 `;
 
-export const PostgresValue = ({ value, type }: PostgresValueProps) => {
-  const resolvedType = getResolvedDataType(type);
+export const PostgresValue = ({ dataType, children, context = '' }: PostgresValueProps) => {
+  const resolvedType = getResolvedDataType(dataType);
 
   switch (resolvedType) {
     // Integers
     case dt.INT2:
     case dt.INT4:
     case dt.INT8:
-      return <StyledNumber>{value}</StyledNumber>;
+      return <StyledNumber data-context={context}>{children}</StyledNumber>;
 
     // Floats
     case dt.NUMERIC:
     case dt.FLOAT4:
     case dt.FLOAT8:
-      return <StyledNumber>{value}</StyledNumber>;
+      return <StyledNumber data-context={context}>{children}</StyledNumber>;
 
     // Booleans
     case dt.BOOLEAN:
-      return <StyledBoolean>{value}</StyledBoolean>;
+      return <StyledBoolean data-context={context}>{children}</StyledBoolean>;
 
     // Date/Time
     case dt.DATE:
@@ -54,15 +55,15 @@ export const PostgresValue = ({ value, type }: PostgresValueProps) => {
     case dt.TIMESTAMP:
     case dt.TIMETZ:
     case dt.TIME:
-      return <StyledDateTime>{value}</StyledDateTime>;
+      return <StyledDateTime data-context={context}>{children}</StyledDateTime>;
 
     // JSON
     case dt.JSON_TYPE:
     case dt.JSONB:
-      return <StyledJson>{value}</StyledJson>;
+      return <StyledJson data-context={context}>{children}</StyledJson>;
 
     // Text / Fallback
     default:
-      return <StyledText>{value}</StyledText>;
+      return <StyledText data-context={context}>{children}</StyledText>;
   }
 };
