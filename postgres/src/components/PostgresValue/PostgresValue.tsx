@@ -7,28 +7,6 @@ export type PostgresValueProps = {
   context?: string;
 };
 
-const StyledNumber = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
-  font-family: monospace;
-`;
-
-const StyledBoolean = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const StyledDateTime = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const StyledJson = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const StyledText = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
-  font-family: Regular;
-`;
-
 export const PostgresValue = ({ dataType, children, context = '' }: PostgresValueProps) => {
   const resolvedType = getResolvedDataType(dataType);
 
@@ -67,3 +45,29 @@ export const PostgresValue = ({ dataType, children, context = '' }: PostgresValu
       return <StyledText data-context={context}>{children}</StyledText>;
   }
 };
+
+// ========================
+// Styled Components
+// ========================
+
+const StyledNumber = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+  font-family: monospace;
+`;
+
+const StyledBoolean = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+const StyledDateTime = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+const StyledJson = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+const StyledText = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+  font-family: Regular;
+`;
