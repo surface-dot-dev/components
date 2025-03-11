@@ -27,9 +27,6 @@ export const DataTable = ({
   renderDataCell,
   context = ctx,
 }: DataTableProps) => {
-  /**
-   * -- HEADER ---------
-   */
   const renderHeaderRow = useCallback(() => {
     return (
       <tr data-context="column headers">
@@ -48,9 +45,6 @@ export const DataTable = ({
     );
   }, [columns, numFixedColumns, renderHeaderCell]);
 
-  /**
-   * -- BODY -----------
-   */
   const renderDataRow = useCallback(
     (rowIndex: number, row: DataTableRowType) => {
       return (
