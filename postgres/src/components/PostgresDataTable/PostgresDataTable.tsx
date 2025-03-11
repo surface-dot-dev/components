@@ -16,6 +16,7 @@ export type PostgresDataTableProps =
       query: string;
       columns?: never;
       rows?: never;
+      context?: string;
     }
 
   // Option #2: Columns & rows are explicitly given, upfront.
@@ -23,13 +24,17 @@ export type PostgresDataTableProps =
       query?: never;
       columns: PostgresDataTableColumnType[];
       rows: PostgresDataTableRowType[];
+      context?: string;
     };
 
-export const PostgresDataTable = ({ query, ...props }: PostgresDataTableProps) => {
+const ctx = 'table of postgres query results';
+
+export const PostgresDataTable = ({ query, context = ctx, ...props }: PostgresDataTableProps) => {
   const [columns, setColumns] = useState<PostgresDataTableColumnType[]>(props.columns || []);
   const [rows, setRows] = useState<PostgresDataTableRowType[]>(props.rows || []);
   const numFixedColumns = useMemo(() => columns.filter((c) => c.inPrimaryKey).length, [columns]);
 
+  // TODO: Add *specific* context.
   const renderHeaderCell = useCallback(
     ({ column }: PostgresDataTableHeaderCellType) => (
       <PostgresColumnName dataType={column.dataType}>{column.name}</PostgresColumnName>
@@ -37,6 +42,7 @@ export const PostgresDataTable = ({ query, ...props }: PostgresDataTableProps) =
     []
   );
 
+  // TODO: Add *specific* context.
   const renderDataCell = useCallback(
     ({ column, value }: PostgresDataTableDataCellType) => (
       <PostgresColumnValue dataType={column.dataType} columnName={column.name}>
@@ -46,11 +52,13 @@ export const PostgresDataTable = ({ query, ...props }: PostgresDataTableProps) =
     []
   );
 
+  // TODO: Add *specific* context once query is analyzed and more is known about the data sources.
   return (
     <DataTable
       columns={columns}
       rows={rows}
       numFixedColumns={numFixedColumns}
+      context={context}
       renderHeaderCell={(props) => renderHeaderCell(props as PostgresDataTableHeaderCellType)}
       renderDataCell={(props) => renderDataCell(props as PostgresDataTableDataCellType)}
     />

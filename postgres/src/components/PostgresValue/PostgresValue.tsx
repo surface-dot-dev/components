@@ -7,8 +7,11 @@ export type PostgresValueProps = {
   context?: string;
 };
 
-export const PostgresValue = ({ dataType, children, context = '' }: PostgresValueProps) => {
+const ctx = (dataType: string) => `"${dataType}" value`;
+
+export const PostgresValue = ({ dataType, children, ...props }: PostgresValueProps) => {
   const resolvedType = getResolvedDataType(dataType);
+  const context = props.context || ctx(dataType);
 
   switch (resolvedType) {
     // Integers

@@ -4,18 +4,21 @@ export type PostgresColumnValueProps = {
   dataType: string;
   columnName: string;
   children: React.ReactNode;
+  context?: string;
 };
 
 const ctx = (dataType: string, columnName: string) =>
-  `the value of column "${columnName}" with data type "${dataType}"`;
+  `"${columnName}" column value (type "${dataType}")`;
 
 export const PostgresColumnValue = ({
   dataType,
   columnName,
   children,
+  ...props
 }: PostgresColumnValueProps) => {
+  const context = props.context || ctx(dataType, columnName);
   return (
-    <PostgresValue dataType={dataType} context={ctx(dataType, columnName)}>
+    <PostgresValue dataType={dataType} context={context}>
       {children}
     </PostgresValue>
   );

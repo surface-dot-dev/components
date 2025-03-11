@@ -8,16 +8,18 @@ import {
   DataTableDataCellType,
 } from './types';
 
-const defaultStyle = { height: '100%', width: '100%' };
-
 export type DataTableProps = {
   columns: DataTableColumnType[];
   rows: DataTableRowType[];
   numFixedColumns?: number;
   renderHeaderCell?: (props: DataTableHeaderCellType) => React.ReactNode;
   renderDataCell?: (props: DataTableDataCellType) => React.ReactNode;
+  className?: string;
   style?: React.CSSProperties;
+  context?: string;
 };
+
+const ctx = 'a table of data';
 
 export const DataTable = ({
   columns,
@@ -26,13 +28,14 @@ export const DataTable = ({
   renderHeaderCell,
   renderDataCell,
   style = {},
+  context = ctx,
 }: DataTableProps) => {
   /**
    * -- HEADER ---------
    */
   const renderHeaderRow = useCallback(() => {
     return (
-      <tr>
+      <tr data-context="column headers">
         {columns.map((column, columnIndex) => {
           const headerCellProps = { column, columnIndex };
           return (
@@ -74,11 +77,15 @@ export const DataTable = ({
   );
 
   return (
-    <TableVirtuoso
-      style={{ ...defaultStyle, ...style }}
+    <StyledTableVirtuoso
       data={rows}
       fixedHeaderContent={renderHeaderRow}
-      itemContent={renderDataRow}
+      itemContent={(rowIndex, row) => renderDataRow(rowIndex, row as DataTableRowType)}
+      style={style}
+      components={{
+        Table: (props) => <table {...props} data-context={context} />,
+        TableRow: (props) => <tr {...props} data-context="row" />,
+      }}
     />
   );
 };
@@ -93,14 +100,29 @@ const uniqueColKey = (index: number, column: DataTableColumnType) => [index, col
 // Styled Components
 // ========================
 
+const StyledTableVirtuoso = styled(TableVirtuoso)`
+  height: 100%;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 const StyledTableHeaderCell = styled.th<{ $isSticky: boolean }>`
   position: ${(props) => (props.$isSticky ? 'sticky' : 'static')};
   left: 0;
   z-index: ${(props) => (props.$isSticky ? 1 : 'auto')};
+  width: 150px;
+  height: 50px;
+  background: white;
 `;
 
 const StyledTableDataCell = styled.td<{ $isSticky: boolean }>`
   position: ${(props) => (props.$isSticky ? 'sticky' : 'static')};
   left: 0;
   z-index: ${(props) => (props.$isSticky ? 1 : 'auto')};
+  width: 150px;
+  height: 50px;
+  background: white;
 `;
