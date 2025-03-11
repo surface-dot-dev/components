@@ -14,8 +14,6 @@ export type DataTableProps = {
   numFixedColumns?: number;
   renderHeaderCell?: (props: DataTableHeaderCellType) => React.ReactNode;
   renderDataCell?: (props: DataTableDataCellType) => React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
   context?: string;
 };
 
@@ -27,7 +25,6 @@ export const DataTable = ({
   numFixedColumns = 0,
   renderHeaderCell,
   renderDataCell,
-  style = {},
   context = ctx,
 }: DataTableProps) => {
   /**
@@ -81,7 +78,6 @@ export const DataTable = ({
       data={rows}
       fixedHeaderContent={renderHeaderRow}
       itemContent={(rowIndex, row) => renderDataRow(rowIndex, row as DataTableRowType)}
-      style={style}
       components={{
         Table: (props) => <table {...props} data-context={context} />,
         TableRow: (props) => <tr {...props} data-context="row" />,
