@@ -14,17 +14,19 @@ export type PostgresDataTableProps =
   // Option #1: Given a query, columns & rows populate based on query results.
   | {
       query: string;
+      context?: string;
+      // --
       columns?: never;
       rows?: never;
-      context?: string;
     }
 
   // Option #2: Columns & rows are explicitly given, upfront.
   | {
-      query?: never;
       columns: PostgresDataTableColumnType[];
       rows: PostgresDataTableRowType[];
       context?: string;
+      // --
+      query?: never;
     };
 
 const ctx = 'table of postgres query results';
